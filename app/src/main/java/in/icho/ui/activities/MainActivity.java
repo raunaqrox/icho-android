@@ -13,15 +13,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import in.icho.R;
 import in.icho.ui.fragments.HomeFragment;
+import in.icho.ui.fragments.PlayerFragment;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private DrawerLayout mDrawerLayout;
+    private PlayerFragment playerFragment;
+    private SlidingUpPanelLayout slidingPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,35 @@ public class MainActivity extends ActionBarActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
+        slidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        playerFragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.player);
+
+        slidingPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View view, float v) {
+
+            }
+
+            @Override
+            public void onPanelCollapsed(View view) {
+                playerFragment.setState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+
+            @Override
+            public void onPanelExpanded(View view) {
+                playerFragment.setState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
+
+            @Override
+            public void onPanelAnchored(View view) {
+
+            }
+
+            @Override
+            public void onPanelHidden(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -75,7 +110,12 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new HomeFragment();
+            switch (position) {
+                case 0:
+                    return new HomeFragment();
+                default:
+                    return new Fragment();
+            }
         }
 
         @Override
@@ -89,4 +129,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public PlayerFragment getPlayerFragment() {
+        return playerFragment;
+    }
 }
