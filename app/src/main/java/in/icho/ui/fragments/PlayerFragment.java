@@ -177,9 +177,9 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (mediaPlayer != null) {
-//                    mediaPlayer.seekTo();
-//                      Toast.makeText(getActivity(), i+"", Toast.LENGTH_SHORT).show();
-                    mediaPlayer.seekTo(i);
+                    if (Math.abs(i - mediaPlayer.getCurrentPosition()) > 1000) {
+                        mediaPlayer.seekTo(i);
+                    }
                 }
             }
 
@@ -249,8 +249,6 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-        System.out.println(percent);
         seekbar.setSecondaryProgress(percent);
-        seekbar.setBackgroundColor(Color.RED);
     }
 }

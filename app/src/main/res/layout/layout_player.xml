@@ -94,7 +94,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=" "
         android:id="@+id/textStartTime"
-        android:layout_below="@+id/seekBar"
+        android:layout_below="@+id/playPauseLoading"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

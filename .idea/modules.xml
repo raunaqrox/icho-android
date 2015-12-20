@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Icho.iml" filepath="$PROJECT_DIR$/Icho.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icho-android-clone.iml" filepath="$PROJECT_DIR$/icho-android-clone.iml" />
     </modules>
   </component>
 </project>
