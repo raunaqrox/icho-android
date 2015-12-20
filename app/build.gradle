@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.example.sahebjot.recycleviewapp"
+        applicationId "in.icho"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

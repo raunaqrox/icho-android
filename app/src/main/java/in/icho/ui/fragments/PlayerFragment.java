@@ -65,9 +65,10 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
         textDescription = (TextView) v.findViewById(R.id.textDescription);
 
         playPause = (Button) v.findViewById(R.id.streamAudio);
-        playPause.setVisibility(View.GONE);
+        playPause.setVisibility(View.INVISIBLE);
         seekbar = (SeekBar) v.findViewById(R.id.seekBar);
-        seekbar.setVisibility(View.GONE);
+        seekbar.setVisibility(View.INVISIBLE);
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
 
             seekbar.getThumb().mutate().setAlpha(0);
@@ -117,10 +118,10 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
                     switch (what) {
                         case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-//                            pg.setVisibility(View.VISIBLE);
+                            pg.setVisibility(View.VISIBLE);
                             break;
                         case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-//                            pg.setVisibility(View.GONE);
+                            pg.setVisibility(View.INVISIBLE);
                             break;
                     }
                     return false;
@@ -136,7 +137,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
                     tvFinal.setText(timeConversion((int) finalTime / 1000));
                     seekbar.setProgress((int) startTime);
                     playPause.setClickable(true);
-                    playPauseLoading.setVisibility(View.GONE);
+                    playPauseLoading.setVisibility(View.INVISIBLE);
                     seekbar.setVisibility(View.VISIBLE);
                     playPause.setVisibility(View.VISIBLE);
                     playPause.setText(PLAY_TEXT);
@@ -240,7 +241,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
     public void setState(SlidingUpPanelLayout.PanelState state) {
         this.state = state;
         if (state == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            imageView.setVisibility(View.GONE);
+            imageView.setVisibility(View.INVISIBLE);
         } else if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             imageView.setVisibility(View.VISIBLE);
         }

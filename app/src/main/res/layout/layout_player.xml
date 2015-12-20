@@ -53,11 +53,8 @@
         app:indicator="BallPulse"
         app:indicator_color="#EEE"
         android:layout_gravity="center_vertical"
-        android:layout_above="@+id/seekBar"
-        android:layout_alignLeft="@+id/streamAudio"
-        android:layout_alignStart="@+id/streamAudio"
-        android:layout_alignRight="@+id/streamAudio"
-        android:layout_alignEnd="@+id/streamAudio" />
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/seekBar" />
 
     <Button
         android:layout_width="wrap_content"
@@ -88,8 +85,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/imageViewFull"
-        android:layout_alignEnd="@+id/imageViewFull" />
+        android:layout_toLeftOf="@+id/textFinalTime"
+        android:layout_toStartOf="@+id/textFinalTime" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -121,7 +118,7 @@
         android:layout_below="@+id/relativeLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/streamAudio"
-        android:layout_toLeftOf="@+id/textFinalTime"
-        android:layout_toStartOf="@+id/textFinalTime" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/streamAudio" />
 </RelativeLayout>
