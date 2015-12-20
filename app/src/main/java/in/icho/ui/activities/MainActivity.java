@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import in.icho.R;
 import in.icho.ui.fragments.HomeFragment;
@@ -87,6 +88,16 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(slidingPanel.getPanelState() == PanelState.EXPANDED ||
+                slidingPanel.getPanelState() == PanelState.ANCHORED){
+            slidingPanel.setPanelState(PanelState.COLLAPSED);
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override

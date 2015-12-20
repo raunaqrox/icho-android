@@ -1,10 +1,13 @@
 package in.icho.ui.fragments;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -25,7 +29,7 @@ import in.icho.data.Item;
 import in.icho.utils.URLStore;
 import in.icho.utils.Radio;
 
-public class PlayerFragment extends Fragment {
+public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingUpdateListener {
 
     Item currentItem;
     ImageView imageView, imageViewFull;
@@ -35,7 +39,9 @@ public class PlayerFragment extends Fragment {
     private static final String PAUSE_TEXT = "\u2759 \u2759";
 
     public MediaPlayer mediaPlayer;
+
     private AVLoadingIndicatorView pg;
+    private View playPauseLoading;
     private double startTime = 0;
     private double finalTime = 0;
     private Handler myHandler = new Handler();
@@ -54,11 +60,23 @@ public class PlayerFragment extends Fragment {
         imageView = (ImageView) v.findViewById(R.id.imageView);
         imageViewFull = (ImageView) v.findViewById(R.id.imageViewFull);
 //        textUser = (TextView) v.findViewById(R.id.textUser);
+
+        playPauseLoading = v.findViewById(R.id.playPauseLoading);
         textDescription = (TextView) v.findViewById(R.id.textDescription);
 
         playPause = (Button) v.findViewById(R.id.streamAudio);
+        playPause.setVisibility(View.GONE);
         seekbar = (SeekBar) v.findViewById(R.id.seekBar);
-        pg = (AVLoadingIndicatorView) v.findViewById(R.id.progressBar);
+        seekbar.setVisibility(View.GONE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+
+            seekbar.getThumb().mutate().setAlpha(0);
+        }else{
+            seekbar.setThumb(getResources().getDrawable(android.R.color.transparent));
+
+        }
+        seekbar.getProgressDrawable().setColorFilter(Color.parseColor("#9934cd") ,PorterDuff.Mode.SRC_IN);
+//        pg = (AVLoadingIndicatorView) v.findViewById(R.id.progressBar);
         tvStart = (TextView) v.findViewById(R.id.textStartTime);
         tvFinal = (TextView) v.findViewById(R.id.textFinalTime);
 
@@ -85,7 +103,6 @@ public class PlayerFragment extends Fragment {
     }
 
     private void prepareStreaming() {
-        playPause.setText("...");
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -100,10 +117,10 @@ public class PlayerFragment extends Fragment {
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
                     switch (what) {
                         case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                            pg.setVisibility(View.VISIBLE);
+//                            pg.setVisibility(View.VISIBLE);
                             break;
                         case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                            pg.setVisibility(View.GONE);
+//                            pg.setVisibility(View.GONE);
                             break;
                     }
                     return false;
@@ -113,14 +130,19 @@ public class PlayerFragment extends Fragment {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    pg.setVisibility(View.GONE);
+//                    pg.setVisibility(View.GONE);
                     finalTime = mediaPlayer.getDuration();
                     seekbar.setMax((int) finalTime);
                     tvFinal.setText(timeConversion((int) finalTime / 1000));
                     seekbar.setProgress((int) startTime);
                     playPause.setClickable(true);
+                    playPauseLoading.setVisibility(View.GONE);
+                    seekbar.setVisibility(View.VISIBLE);
+                    playPause.setVisibility(View.VISIBLE);
                     playPause.setText(PLAY_TEXT);
                     myHandler.postDelayed(updateSeekbar, 1000);
+                    playPause.setText(PAUSE_TEXT);
+                    mediaPlayer.start();
                 }
             });
 
@@ -153,7 +175,11 @@ public class PlayerFragment extends Fragment {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+                if (mediaPlayer != null) {
+//                    mediaPlayer.seekTo();
+//                      Toast.makeText(getActivity(), i+"", Toast.LENGTH_SHORT).show();
+                    mediaPlayer.seekTo(i);
+                }
             }
 
             @Override
@@ -218,5 +244,12 @@ public class PlayerFragment extends Fragment {
         } else if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             imageView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        System.out.println(percent);
+        seekbar.setSecondaryProgress(percent);
+        seekbar.setBackgroundColor(Color.RED);
     }
 }

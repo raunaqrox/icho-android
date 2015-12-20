@@ -85,7 +85,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return items.size() > 10 ? 10 : items.size();
+        return items.size();
     }
 
 }
