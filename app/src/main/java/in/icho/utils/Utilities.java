@@ -94,6 +94,17 @@ public class Utilities {
 		}
 		return true;
 	}
+	public static final boolean CheckInternetConnection(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
+			return true;
+
+		} else {
+			return false;
+		}
+	}
+
 
 	public static int dp(float value) {
 		return (int) Math.ceil(density * value);
