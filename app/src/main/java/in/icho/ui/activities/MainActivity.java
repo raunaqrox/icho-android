@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,7 @@ import in.icho.ui.fragments.HomeFragment;
 import in.icho.ui.fragments.PlayerFragment;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private PlayerFragment playerFragment;
@@ -56,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -114,16 +116,25 @@ public class MainActivity extends ActionBarActivity {
     }
 
     static class MainPagerAdapter extends FragmentStatePagerAdapter {
-
-        public MainPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+        private String tabNames[] = {"New", "Popular", "Featured"};
+        public MainPagerAdapter(FragmentManager fm) { super(fm); }
 
         @Override
         public Fragment getItem(int position) {
+            HomeFragment fr;
             switch (position) {
                 case 0:
-                    return new HomeFragment();
+                    fr = new HomeFragment();
+                    fr.setType(this.tabNames[position]);
+                    return fr;
+                case 1:
+                    fr = new HomeFragment();
+                    fr.setType(this.tabNames[position]);
+                    return fr;
+                case 2:
+                    fr = new HomeFragment();
+                    fr.setType(this.tabNames[position]);
+                    return fr;
                 default:
                     return new Fragment();
             }
@@ -136,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Tab " + position;
+            return this.tabNames[position];
         }
     }
 

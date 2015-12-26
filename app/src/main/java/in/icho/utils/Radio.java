@@ -14,11 +14,11 @@ import in.icho.R;
 
 public class Radio {
 
-    public static void fetchThumbailImage(ImageView im, String title, String ext) {
+    public static void fetchThumbailImage(ImageView im, String title, String ext, String uploader) {
         // change after dummy
         String imageUrl = null;
         try {
-            imageUrl = URLStore.S3_URL + URLEncoder.encode(title.trim() + "." + ext.trim(), "UTF-8");
+            imageUrl = URLStore.S3_URL + uploader + "/" + URLEncoder.encode(title.trim() + "." + ext.trim(), "UTF-8");
             System.out.println(imageUrl);
             Picasso.with(IchoApplication.applicationContext)
                     .load(imageUrl)
@@ -31,11 +31,11 @@ public class Radio {
         }
     }
 
-    public static void fetchFullImage(ImageView im, String title, String ext) {
+    public static void fetchFullImage(ImageView im, String title, String ext, String uploader) {
         // change after dummy
         String imageUrl = null;
         try {
-            imageUrl = URLStore.S3_URL + URLEncoder.encode(title.trim() + "." + ext.trim(), "UTF-8");
+            imageUrl = URLStore.S3_URL + uploader + "/" + URLEncoder.encode(title.trim() + "." + ext.trim(), "UTF-8");
             System.out.println(imageUrl);
             Picasso.with(IchoApplication.applicationContext)
                     .load(imageUrl).centerCrop()

@@ -53,8 +53,8 @@
         app:indicator="BallPulse"
         app:indicator_color="#EEE"
         android:layout_gravity="center_vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/seekBar" />
+        android:layout_alignBottom="@+id/streamAudio"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -68,13 +68,33 @@
         android:shadowColor="@color/icho_black"
         android:textColor="@color/primary"
         android:padding="10dp"
-        android:layout_above="@+id/playPauseLoading"
+        android:layout_above="@+id/seekBar"
         android:layout_centerHorizontal="true" />
 
     <SeekBar
-        android:layout_width="wrap_content"
+        android:layout_width="12dip"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
+        android:indeterminate="false"
+        android:progressBackgroundTint="@color/primary"
+        android:secondaryProgressTint="@color/icho_white"
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:minHeight="12dip"
+        android:maxHeight="12dip"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/accent"
+        android:secondaryProgressTintMode="src_atop"
+        android:layout_above="@+id/volume"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="28dp"
+        android:layout_toLeftOf="@+id/textFinalTime"
+        android:layout_toStartOf="@+id/textFinalTime" />
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/volume"
         android:indeterminate="false"
         android:progressBackgroundTint="@color/primary"
         android:secondaryProgressTint="@color/icho_black"
@@ -82,12 +102,11 @@
         android:paddingBottom="10px"
         android:minHeight="12dip"
         android:maxHeight="12dip"
+        android:layout_alignRight="@+id/seekBar"
+        android:layout_alignEnd="@+id/seekBar"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/textFinalTime"
-        android:layout_toStartOf="@+id/textFinalTime" />
-
+        android:layout_alignLeft="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,11 +133,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageViewFull"
         android:src="@mipmap/ic_launcher"
-        android:padding="10dp"
+        android:padding="5dp"
         android:layout_below="@+id/relativeLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/streamAudio" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/volumeIcon"
+        android:src="@mipmap/volume_icon"
+        android:layout_below="@id/seekBar"
+        android:layout_alignParentLeft="true"/>
 </RelativeLayout>

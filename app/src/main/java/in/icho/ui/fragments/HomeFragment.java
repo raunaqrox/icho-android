@@ -1,5 +1,6 @@
 package in.icho.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,10 +32,18 @@ public class HomeFragment extends Fragment implements HomeListItemClickListener 
     private RecyclerView recyclerView;
     private HomeListAdapter adapter;
     private ArrayList<Item> items;
+    private String type;
 
     public HomeFragment() {
     }
 
+    public String getType(){
+        return this.type;
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +69,7 @@ public class HomeFragment extends Fragment implements HomeListItemClickListener 
         int refresh = new Store().getSP().getInt("firstTime", 0);
         if (refresh == 0) {
             startLoadingAnimation();
-            Radio.fetchList(URLStore.ALL_ITEMS, new FutureCallback<String>() {
+            Radio.fetchList(URLStore.API + "items?type=" + this.type, new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     stopLoadingAnimation();
@@ -158,6 +167,7 @@ public class HomeFragment extends Fragment implements HomeListItemClickListener 
     public void onClick(Item item) {
         PlayerFragment pf = ((MainActivity) getActivity()).getPlayerFragment();
         if (pf != null) {
+            pf.init();
             pf.setCurrentItem(item);
         }
     }

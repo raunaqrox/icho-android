@@ -2,6 +2,7 @@ package in.icho.ui.adapters;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,21 @@ import java.util.ArrayList;
 
 import in.icho.R;
 import in.icho.data.Item;
+import in.icho.ui.fragments.HomeFragment;
 import in.icho.utils.Radio;
 
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
 
     private HomeListItemClickListener homeListItemClickListener;
     private ArrayList<Item> items;
+    public HomeListAdapter(){
 
+    }
     public void setItems(ArrayList<Item> items) {
         this.items = items;
+        for(int i = 0; i < items.size(); i++) {
+            Log.i("LIST", items.get(i).toString());
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,13 +71,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         holder.textView.setText(item.getTitle());
         final String title = String.valueOf(item.getTitle());
         final String ext = String.valueOf(item.getImage_extension());
+        final String uploader = String.valueOf(item.getUploader());
 
         holder.textView.setText(title);
         final ImageView im = holder.imageView;
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                Radio.fetchThumbailImage(im, title, ext);
+                Radio.fetchThumbailImage(im, title, ext, uploader);
             }
         });
 
