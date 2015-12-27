@@ -21,12 +21,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import in.icho.R;
 import in.icho.data.Item;
@@ -56,6 +62,8 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
     private AudioManager audioManager;
     private Boolean muteStatus = false;
     private int currentVolume = 0;
+    private RequestQueue queue;
+    private String url;
 
     public PlayerFragment() {
 
@@ -78,6 +86,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
 
         tvStart = (TextView) v.findViewById(R.id.textStartTime);
         tvFinal = (TextView) v.findViewById(R.id.textFinalTime);
+        queue = Volley.newRequestQueue(getContext());
         init();
 
         return v;
@@ -85,16 +94,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
 
     public void init(){
         Log.d("MP", "INIT");
-        seekbar.setVisibility(View.INVISIBLE);
-        playPause.setVisibility(View.INVISIBLE);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            seekbar.getThumb().mutate().setAlpha(0);
-            volume.getThumb().mutate().setAlpha(0);
-        }else{
-            seekbar.setThumb(getResources().getDrawable(android.R.color.transparent));
-            volume.setThumb(getResources().getDrawable(android.R.color.transparent));
-        }
+        showLoadingHidePlayer();
 
         seekbar.getProgressDrawable().setColorFilter(Color.parseColor("#9934cd"), PorterDuff.Mode.SRC_IN);
         volume.getProgressDrawable().setColorFilter(Color.parseColor("#9934cd"), PorterDuff.Mode.SRC_IN);
@@ -121,6 +121,32 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
                 Log.d("MP", muteStatus.toString());
             }
         });
+    }
+
+    public void hideLoadingShowPlayer(){
+        playPauseLoading.setVisibility(View.INVISIBLE);
+        seekbar.setVisibility(View.VISIBLE);
+        playPause.setVisibility(View.VISIBLE);
+        playPause.setText(PLAY_TEXT);
+        tvFinal.setVisibility(View.VISIBLE);
+        tvStart.setVisibility(View.VISIBLE);
+
+    }
+    public void showLoadingHidePlayer(){
+        playPause.setText("");
+        playPauseLoading.setVisibility(View.VISIBLE);
+        seekbar.setVisibility(View.INVISIBLE);
+        playPause.setVisibility(View.INVISIBLE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            seekbar.getThumb().mutate().setAlpha(0);
+            volume.getThumb().mutate().setAlpha(0);
+        }else{
+            seekbar.setThumb(getResources().getDrawable(android.R.color.transparent));
+            volume.setThumb(getResources().getDrawable(android.R.color.transparent));
+        }
+
+        tvFinal.setVisibility(View.INVISIBLE);
+        tvStart.setVisibility(View.INVISIBLE);
     }
 
     public void changeImage(ImageView i, int id){
@@ -150,31 +176,50 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
         prepareStreaming();
     }
 
-    private String getUrl() {
+    private void setUpURL() {
+        String currUrl = "";
         if (currentItem != null) {
-//            try {
-                return URLStore.API +"play?id=" + currentItem.get_id();
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
+            currUrl = URLStore.API +"play?id=" + currentItem.get_id();
+            Log.d("MP","get request for "+currUrl);
         }
-        return "";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, currUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                       setUrl(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Error, Retrying...", Toast.LENGTH_SHORT).show();
+                Log.d("MP", error.toString());
+                setUpURL();
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
-    private void prepareStreaming() {
+    public void setUrl(String url){
+        Log.d("MP", url);
+        this.url = url;
+        prepareMediaPlayer();
+    }
+
+    private void prepareMediaPlayer(){
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
 
         mediaPlayer = new MediaPlayer();
-
-        Log.d("MP", "prepareStreaming");
-        mediaPlayer.setOnBufferingUpdateListener(this);
         try {
             Log.d("MP", "try prepareStreaming");
-            mediaPlayer.setDataSource(getUrl());
-            Log.d("MP", getUrl());
+            Log.d("MP", "Our current url : " + url);
+
+            URI uri = new URI(url.replace(" ", "%20"));
+            mediaPlayer.setDataSource(String.valueOf(uri));
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                 @Override
@@ -199,10 +244,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
                     tvFinal.setText(timeConversion((int) finalTime / 1000));
                     seekbar.setProgress((int) startTime);
                     playPause.setClickable(true);
-                    playPauseLoading.setVisibility(View.INVISIBLE);
-                    seekbar.setVisibility(View.VISIBLE);
-                    playPause.setVisibility(View.VISIBLE);
-                    playPause.setText(PLAY_TEXT);
+                    hideLoadingShowPlayer();
                     myHandler.postDelayed(updateSeekbar, 1000);
                     playPause.setText(PAUSE_TEXT);
                     mediaPlayer.start();
@@ -211,7 +253,7 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    Log.d("MP", what + " " + extra);
+                    Log.d("MP", "ERROR " + what + " " + extra);
                     return true;
                 }
             });
@@ -220,20 +262,33 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     Log.d("MP", "onCompletion");
+                    Toast.makeText(getContext(), "MediaPlayer error", Toast.LENGTH_SHORT).show();
                     playPause.setClickable(true);
                     playPause.setText(PLAY_TEXT);
                 }
             });
+            mediaPlayer.setOnBufferingUpdateListener(this);
             mediaPlayer.prepareAsync();
+
 
         } catch (IOException e) {
             Log.d("MP", "catch prepareStreaming");
+            Toast.makeText(getContext(), "ERROR streaming", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void prepareStreaming() {
+        showLoadingHidePlayer();
+        setUpURL();
+        Log.d("MP", "prepareStreaming");
+
         playPause.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
-
                     mediaPlayer.pause();
                     playPause.setText(PLAY_TEXT);
                 } else {

@@ -29,5 +29,5 @@ dependencies {
     compile 'com.wang.avi:library:1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 }
