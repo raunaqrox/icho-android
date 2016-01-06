@@ -2324,7 +2324,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c0073;
         public static final int action_mode_bar_stub=0x7f0c0072;
         public static final int action_mode_close_button=0x7f0c005b;
-        public static final int action_settings=0x7f0c00ac;
+        public static final int action_settings=0x7f0c00ad;
         public static final int activity_chooser_view_content=0x7f0c005c;
         public static final int alertTitle=0x7f0c0066;
         public static final int always=0x7f0c004d;
@@ -2383,9 +2383,10 @@ containing a value of this type.
         public static final int middle=0x7f0c004c;
         public static final int mini=0x7f0c004a;
         public static final int multiply=0x7f0c0041;
+        public static final int navigation_item_audiobooks=0x7f0c00ac;
+        public static final int navigation_item_channel=0x7f0c00aa;
         public static final int navigation_item_home=0x7f0c00a9;
-        public static final int navigation_item_images=0x7f0c00aa;
-        public static final int navigation_item_location=0x7f0c00ab;
+        public static final int navigation_item_podcasts=0x7f0c00ab;
         public static final int navigation_view=0x7f0c008b;
         public static final int never=0x7f0c0050;
         public static final int none=0x7f0c002c;
@@ -2546,13 +2547,13 @@ containing a value of this type.
         public static final int app_name=0x7f060013;
         public static final int appbar_scrolling_view_behavior=0x7f060014;
         public static final int drawer_header_text=0x7f060015;
-        public static final int hello_world=0x7f060016;
-        public static final int img_descrp=0x7f060017;
-        public static final int nav_item_home=0x7f060018;
-        public static final int nav_item_option1=0x7f060019;
-        public static final int nav_item_option2=0x7f06001a;
-        public static final int nav_sub_menu=0x7f06001b;
-        public static final int nav_sub_menu_settings=0x7f06001c;
+        public static final int img_descrp=0x7f060016;
+        public static final int nav_item_audiobooks=0x7f060017;
+        public static final int nav_item_channel=0x7f060018;
+        public static final int nav_item_home=0x7f060019;
+        public static final int nav_item_podcasts=0x7f06001a;
+        public static final int nav_sub_menu_audiobooks_discover=0x7f06001b;
+        public static final int nav_sub_menu_podcasts_discover=0x7f06001c;
         public static final int status_bar_notification_info_overflow=0x7f060011;
     }
     public static final class style {

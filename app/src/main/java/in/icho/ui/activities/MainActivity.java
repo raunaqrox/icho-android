@@ -49,7 +49,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
-                Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+
+                switch(menuItem.getTitle().toString()){
+                    case "Home":
+                        Toast.makeText(MainActivity.this, "Back to home", Toast.LENGTH_SHORT).show();
+                    case "Audio Books":
+                        Toast.makeText(MainActivity.this, "audio books", Toast.LENGTH_SHORT).show();
+                    case "Podcasts":
+                        Toast.makeText(MainActivity.this, "podcasts", Toast.LENGTH_SHORT).show();
+                    default:
+                        Toast.makeText(MainActivity.this, "channel : "+menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         });

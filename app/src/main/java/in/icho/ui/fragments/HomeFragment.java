@@ -62,13 +62,18 @@ public class HomeFragment extends Fragment implements HomeListItemClickListener 
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-
+//        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//            @Override
+//            public int getSpanSize(int position) {
+//                return (2 - position % 2);
+//            }
+//        });
         adapter = new HomeListAdapter(items, this);
         recyclerView.setAdapter(adapter);
-
+        startLoadingAnimation();
         int refresh = new Store().getSP().getInt("firstTime", 0);
-        if (refresh == 0) {
-            startLoadingAnimation();
+//        if (refresh == 0) {
+
             Radio.fetchList(URLStore.API + "items?type=" + this.type, new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -87,10 +92,10 @@ public class HomeFragment extends Fragment implements HomeListItemClickListener 
                     new Store().getSP().edit().putInt("firstTime", newR).commit();
                 }
             });
-        } else {
+//        } else {
             refreshGrid();
             stopLoadingAnimation();
-        }
+//        }
     }
 
     private void refreshGrid() {

@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Icho</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="drawer_header_text">Drawer Header</string>
+    <string name="drawer_header_text">ICHO</string>
     <string name="nav_item_home">Home</string>
-    <string name="nav_item_option1">Option1</string>
-    <string name="nav_item_option2">Option2</string>
-    <string name="nav_sub_menu">Sub Menu</string>
-    <string name="nav_sub_menu_settings">Settings</string>
+    <string name="nav_item_channel">YourStory</string>
+    <string name="nav_item_podcasts">Podcasts</string>
+    <string name="nav_item_audiobooks">Audio Books</string>
+    <string name="nav_sub_menu_podcasts_discover">Discover</string>
+    <string name="nav_sub_menu_audiobooks_discover">Discover</string>
     <string name="img_descrp">Image</string>
 
 </resources>

@@ -8,21 +8,33 @@
             android:icon="@mipmap/ic_launcher"
             android:title="@string/nav_item_home" />
         <item
-            android:id="@+id/navigation_item_images"
+            android:id="@+id/navigation_item_channel"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_item_option1" />
+            android:title="@string/nav_item_channel" />
         <item
-            android:id="@+id/navigation_item_location"
+            android:id="@+id/navigation_item_podcasts"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/nav_item_option2" />
+            android:title="@string/nav_item_podcasts" />
+        <item
+            android:id="@+id/navigation_item_audiobooks"
+            android:icon="@mipmap/volume_icon"
+            android:title="@string/nav_item_audiobooks" />
     </group>
 
-    <item android:title="@string/nav_sub_menu">
-        <menu>
-            <item
-                android:icon="@mipmap/ic_launcher"
-                android:title="@string/nav_sub_menu_settings" />
-        </menu>
-    </item>
+    <!--<item android:title="@string/nav_sub_podcasts">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:icon="@mipmap/ic_launcher"-->
+                <!--android:title="@string/nav_sub_menu_podcasts_discover" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+    <!--<item android:title="@string/nav_sub_audiobooks">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:icon="@mipmap/ic_launcher"-->
+                <!--android:title="@string/nav_sub_menu_audiobooks_discover" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu><!-- From: file:/Users/apple/Documents/android/icho-android-clone/app/src/main/res/menu/drawer.xml -->
