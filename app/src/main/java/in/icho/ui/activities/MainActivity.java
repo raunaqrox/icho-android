@@ -1,5 +1,6 @@
 package in.icho.ui.activities;
 
+import android.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -22,6 +25,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import in.icho.R;
 import in.icho.ui.fragments.HomeFragment;
+import in.icho.ui.fragments.LoginFragment;
 import in.icho.ui.fragments.PlayerFragment;
 
 
@@ -30,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private PlayerFragment playerFragment;
     private SlidingUpPanelLayout slidingPanel;
-
+    private LoginFragment loginFragment;
+    private Button closeLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        closeLogin = (Button) findViewById(R.id.closeLogin);
+        closeLogin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(loginFragment != null)
+                    findViewById(R.id.fragment_container).setVisibility(View.INVISIBLE);
+            }
+        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -50,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
 
-                switch(menuItem.getTitle().toString()){
+                switch (menuItem.getTitle().toString()) {
                     case "Home":
                         Toast.makeText(MainActivity.this, "Back to home", Toast.LENGTH_SHORT).show();
                     case "Audio Books":
@@ -58,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     case "Podcasts":
                         Toast.makeText(MainActivity.this, "podcasts", Toast.LENGTH_SHORT).show();
                     default:
-                        Toast.makeText(MainActivity.this, "channel : "+menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "channel : " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -73,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
         slidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         playerFragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.player);
+
+        loginFragment = new LoginFragment();
+        FragmentTransaction loginTransaction = getFragmentManager().beginTransaction();
+        loginTransaction.replace(R.id.fragment_container, loginFragment);
+        loginTransaction.commit();
+
 
         slidingPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
