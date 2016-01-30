@@ -63,12 +63,16 @@
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
         </LinearLayout>
-
-        <fragment
-            android:id="@+id/fragment_container"
-            android:name="in.icho.ui.fragments.LoginFragment"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:clickable="true">
+            <fragment
+                android:id="@+id/fragment_container"
+                android:name="in.icho.ui.fragments.LoginFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

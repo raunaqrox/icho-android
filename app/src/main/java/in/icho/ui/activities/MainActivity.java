@@ -40,21 +40,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("ICHO_LOG", "onCreate");
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        Log.d("ICHO_LOG", "onCreate");
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        closeLogin = (Button) findViewById(R.id.closeLogin);
-        closeLogin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(loginFragment != null)
-                    findViewById(R.id.fragment_container).setVisibility(View.INVISIBLE);
-            }
-        });
+        Log.d("ICHO_LOG","before loginInit");
+        loginInit();
+        Log.d("ICHO_LOG", "login init done");
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -87,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
         slidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         playerFragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.player);
 
-        loginFragment = new LoginFragment();
-        FragmentTransaction loginTransaction = getFragmentManager().beginTransaction();
-        loginTransaction.replace(R.id.fragment_container, loginFragment);
-        loginTransaction.commit();
-
 
         slidingPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -119,6 +113,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void showLoginFragment(){
+        Log.d("ICHO_LOG", "here!!!");
+        loginFragment = new LoginFragment();
+        FragmentTransaction loginTransaction = getFragmentManager().beginTransaction();
+        loginTransaction.replace(R.id.fragment_container, loginFragment);
+        loginTransaction.commit();
+    }
+
+    public void loginInit(){
+        Log.d("ICHO_LOG","starting login init");
+        showLoginFragment();
+        closeLogin = (Button) findViewById(R.id.closeLogin);
+        Log.d("ICHO_LOG", "here!");
+        closeLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (loginFragment != null)
+                    findViewById(R.id.fragment_container).setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    public void initHomeFragment() {
+
     }
 
     @Override
