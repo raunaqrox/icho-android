@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <FrameLayout
         android:background="@color/icho_black"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -63,18 +63,14 @@
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
         </LinearLayout>
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:name="in.icho.ui.fragments.LoginFragment"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:clickable="true">
-            <fragment
-                android:id="@+id/fragment_container"
-                android:name="in.icho.ui.fragments.LoginFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
-        </LinearLayout>
+            android:layout_height="fill_parent"/>
 
-    </RelativeLayout>
+
+    </FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

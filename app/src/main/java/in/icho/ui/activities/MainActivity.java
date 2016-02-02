@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -40,20 +41,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("ICHO_LOG", "onCreate");
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        Log.d("ICHO_LOG", "onCreate");
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Log.d("ICHO_LOG","before loginInit");
-        loginInit();
-        Log.d("ICHO_LOG", "login init done");
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -113,32 +108,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        initLogin();
     }
 
-    public void showLoginFragment(){
-        Log.d("ICHO_LOG", "here!!!");
+    public void initLogin(){
         loginFragment = new LoginFragment();
-        FragmentTransaction loginTransaction = getFragmentManager().beginTransaction();
-        loginTransaction.replace(R.id.fragment_container, loginFragment);
-        loginTransaction.commit();
-    }
-
-    public void loginInit(){
-        Log.d("ICHO_LOG","starting login init");
-        showLoginFragment();
-        closeLogin = (Button) findViewById(R.id.closeLogin);
-        Log.d("ICHO_LOG", "here!");
-        closeLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (loginFragment != null)
-                    findViewById(R.id.fragment_container).setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
-    public void initHomeFragment() {
-
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, loginFragment)
+                .commit();
     }
 
     @Override
