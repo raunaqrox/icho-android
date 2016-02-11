@@ -115,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void initLogin(){
         loginFragment = new LoginFragment();
         getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, loginFragment)
+                .beginTransaction().add(R.id.fragment_container, loginFragment)
                 .commit();
     }
 
