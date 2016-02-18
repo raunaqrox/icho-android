@@ -35,7 +35,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import in.icho.R;
-import in.icho.data.Item;
+import in.icho.model.Item;
 import in.icho.utils.URLStore;
 import in.icho.utils.Radio;
 
@@ -193,8 +193,8 @@ public class PlayerFragment extends Fragment implements MediaPlayer.OnBufferingU
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), "Error, Retrying...", Toast.LENGTH_SHORT).show();
-                Log.d("MP", error.toString());
-                setUpURL();
+//                Log.d("MP", error.toString());
+//                setUpURL();
             }
         });
 // Add the request to the RequestQueue.

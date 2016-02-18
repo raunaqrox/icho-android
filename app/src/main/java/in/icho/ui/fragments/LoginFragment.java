@@ -9,17 +9,29 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import in.icho.ui.activities.MainActivity;
+import in.icho.API.IchoService;
+import in.icho.model.User;
+import in.icho.model.Token;
+import in.icho.utils.URLStore;
 
 import in.icho.R;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.Callback;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginFragment extends Fragment {
     private String type;
     private Button closeLogin;
     private Button loginButton;
     private Button registerButton;
+    private EditText username;
+    private EditText password;
+    private EditText email;
     View loginView;
     public LoginFragment() {
 
@@ -33,7 +45,8 @@ public class LoginFragment extends Fragment {
         // consumes the touch event when this fragment is on top
         loginView.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                return true; }
+                return true;
+            }
         });
 
         return loginView;
@@ -49,15 +62,39 @@ public class LoginFragment extends Fragment {
         closeLogin = (Button) view.findViewById(R.id.closeLogin);
         loginButton = (Button) view.findViewById(R.id.login);
         registerButton = (Button) view.findViewById(R.id.register);
-
-        final Fragment loginFragmnet = (Fragment)this;
+        username = (EditText) view.findViewById(R.id.username);
+        password = (EditText) view.findViewById(R.id.password);
+        email = (EditText) view.findViewById(R.id.email);
+        final Fragment loginFragmnet = (Fragment) this;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validLoginClick(currentView)){
+                if (!validLoginClick(currentView)) {
                     showLoginTextViews(currentView);
-                }else{
+                } else {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(URLStore.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
+                    IchoService service = retrofit.create(IchoService.class);
+                    User myUser = new User(email.getText().toString(), password.getText().toString());
+                    retrofit2.Call<Token> call = service.logUserIn(myUser);
+                    call.enqueue(new Callback<Token>() {
+                        @Override
+                        public void onResponse(Call<Token> call, Response<Token> response) {
+                            if (response.isSuccess()) {
+                                Token t = response.body();
+                                Log.d("TOKEN",t.getToken());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Token> call, Throwable t) {
+
+                        }
+                    });
+                    Log.d("LOGIN", "LOGIN DONE");
                 }
             }
         });
@@ -66,21 +103,44 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showAllViews(currentView);
+                if (!validRegistrationClick(currentView)) {
+                    showAllViews(currentView);
+                } else {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(URLStore.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    IchoService service = retrofit.create(IchoService.class);
+                    User myUser = new User(username.getText().toString(),
+                            email.getText().toString(), password.getText().toString());
+                    retrofit2.Call<User> call = service.registerUser(myUser);
+                    call.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if (response.isSuccess()) {
+                                User u = response.body();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+
+                        }
+                    });
+                }
             }
         });
 
-        closeLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getFragmentManager()
-                        .beginTransaction().remove(loginFragmnet).commit();
-            }
-        });
-
+    closeLogin.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getActivity().getFragmentManager()
+                    .beginTransaction().remove(loginFragmnet).commit();
+        }
+    });
     }
 
     public Boolean validLoginClick(View v){
-//        TextView email = (TextView) v.findViewById(R.id.email);
         String username = ((TextView) v.findViewById(R.id.username)).getText().toString();
         String password = ((TextView) v.findViewById(R.id.password)).getText().toString();
 
@@ -92,6 +152,19 @@ public class LoginFragment extends Fragment {
         }else {
             return true;
         }
+    }
+
+    public Boolean validRegistrationClick(View v){
+        String email = ((TextView) v.findViewById(R.id.email)).getText().toString();
+        String username = ((TextView) v.findViewById(R.id.username)).getText().toString();
+        String password = ((TextView) v.findViewById(R.id.password)).getText().toString();
+
+        if(username.length() == 0 || password.length() == 0 || email.length() == 0) {
+            return false;
+        }else {
+            return true;
+        }
+
     }
 
     public void hideFragment(View loginFragment) {

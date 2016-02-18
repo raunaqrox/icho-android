@@ -10,24 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.icho.R;
-import in.icho.data.Item;
+
+import in.icho.model.Item;
 import in.icho.ui.fragments.HomeFragment;
 import in.icho.utils.Radio;
 
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
 
     private HomeListItemClickListener homeListItemClickListener;
-    private ArrayList<Item> items;
+    private List<Item> items;
     public HomeListAdapter(){
 
     }
-    public void setItems(ArrayList<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
-        for(int i = 0; i < items.size(); i++) {
-            Log.i("LIST", items.get(i).toString());
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +52,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         notifyItemRemoved(position);
     }
 
-    public HomeListAdapter(ArrayList<Item> myDataset, HomeListItemClickListener homeListItemClickListener) {
+    public HomeListAdapter(List<Item> myDataset, HomeListItemClickListener homeListItemClickListener) {
         this.homeListItemClickListener = homeListItemClickListener;
         items = myDataset;
     }
@@ -70,7 +69,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         final Item item = items.get(position);
         holder.textView.setText(item.getTitle());
         final String title = String.valueOf(item.getTitle());
-        final String ext = String.valueOf(item.getImage_extension());
+        final String ext = item.getImage_extension();
         final String uploader = String.valueOf(item.getUploader());
 
         holder.textView.setText(title);

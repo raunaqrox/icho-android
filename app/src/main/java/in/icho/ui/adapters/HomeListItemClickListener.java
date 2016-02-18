@@ -1,6 +1,6 @@
 package in.icho.ui.adapters;
 
-import in.icho.data.Item;
+import in.icho.model.Item;
 
 /**
  * Created by abs on 14/12/15.
